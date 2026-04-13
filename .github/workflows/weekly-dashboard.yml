@@ -26,17 +26,23 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Generate dashboard
-        env:
-          PENDO_KEY_TRIAL_CONNECTION:          ${{ secrets.PENDO_KEY_TRIAL_CONNECTION }}
-          PENDO_KEY_MEALPLANR:                 ${{ secrets.PENDO_KEY_MEALPLANR }}
-          PENDO_KEY_HOMETOWN:                  ${{ secrets.PENDO_KEY_HOMETOWN }}
-          PENDO_KEY_TB_GUIDE:                  ${{ secrets.PENDO_KEY_TB_GUIDE }}
-          PENDO_KEY_APPHATCHERY:               ${{ secrets.PENDO_KEY_APPHATCHERY }}
-          PENDO_KEY_LEP:                       ${{ secrets.PENDO_KEY_LEP }}
-          PENDO_KEY_APPHATCHERY_TONSILLECTOMY: ${{ secrets.PENDO_KEY_APPHATCHERY_TONSILLECTOMY }}
-          PENDO_KEY_TYPEU:                     ${{ secrets.PENDO_KEY_TYPEU }}
-        run: python generate_dashboard.py
+      # NOTE: dashboard.html is generated locally by the Claude scheduled task
+      # (which uses the Pendo MCP — no API key required) and committed here.
+      # This workflow just commits any changes pushed by that process.
+      # If you ever upgrade to a Pendo plan with API access, uncomment the env
+      # block below and this step will generate the file directly.
+      #
+      # - name: Generate dashboard (REST API mode — requires Pendo premium)
+      #   env:
+      #     PENDO_KEY_TRIAL_CONNECTION:          ${{ secrets.PENDO_KEY_TRIAL_CONNECTION }}
+      #     PENDO_KEY_MEALPLANR:                 ${{ secrets.PENDO_KEY_MEALPLANR }}
+      #     PENDO_KEY_HOMETOWN:                  ${{ secrets.PENDO_KEY_HOMETOWN }}
+      #     PENDO_KEY_TB_GUIDE:                  ${{ secrets.PENDO_KEY_TB_GUIDE }}
+      #     PENDO_KEY_APPHATCHERY:               ${{ secrets.PENDO_KEY_APPHATCHERY }}
+      #     PENDO_KEY_LEP:                       ${{ secrets.PENDO_KEY_LEP }}
+      #     PENDO_KEY_APPHATCHERY_TONSILLECTOMY: ${{ secrets.PENDO_KEY_APPHATCHERY_TONSILLECTOMY }}
+      #     PENDO_KEY_TYPEU:                     ${{ secrets.PENDO_KEY_TYPEU }}
+      #   run: python generate_dashboard.py
 
       - name: Commit and push updated dashboard
         run: |
