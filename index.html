@@ -74,6 +74,11 @@
       margin-bottom: 4px;
     }
     .trend-box h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; }
+    .overall-chart-wrap {
+      position: relative;
+      width: 100%;
+      height: 200px;
+    }
 
     /* ── Subscription sections ── */
     .sub-section { margin-bottom: 28px; }
@@ -184,10 +189,10 @@
     </svg>
     <div>
       <h1>Monthly Active Users — All Subscriptions</h1>
-      <div class="meta">Jan – Mar 2026 trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; 21 apps</div>
+      <div class="meta">Jan – Mar 2026 trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; 18 apps</div>
     </div>
   </div>
-  <div class="apr-note">Apr data is MTD (through Apr 12)</div>
+  <div class="apr-note">Apr data is MTD (through Apr 13)</div>
 </header>
 
 <main>
@@ -197,28 +202,28 @@
   <div class="summary-row">
     <div class="sum-card">
       <div class="lbl">Jan MAU</div>
-      <div class="val">959</div>
+      <div class="val">1,021</div>
       <div class="sub">All apps combined</div>
     </div>
     <div class="sum-card">
       <div class="lbl">Feb MAU</div>
-      <div class="val">1,040</div>
-      <div class="sub">+8.4% vs Jan</div>
+      <div class="val">1,090</div>
+      <div class="sub">+6.8% vs Jan</div>
     </div>
     <div class="sum-card">
       <div class="lbl">Mar MAU</div>
-      <div class="val">1,347</div>
-      <div class="sub">+29.5% vs Feb</div>
+      <div class="val">1,421</div>
+      <div class="sub">+30.4% vs Feb</div>
     </div>
     <div class="sum-card">
       <div class="lbl">Apr MAU (MTD)</div>
-      <div class="val">638</div>
-      <div class="sub">12 of 30 days</div>
+      <div class="val">686</div>
+      <div class="sub">13 of 30 days</div>
     </div>
     <div class="sum-card">
       <div class="lbl">Active Apps</div>
-      <div class="val">15</div>
-      <div class="sub">of 21 with any MAU</div>
+      <div class="val">16</div>
+      <div class="sub">of 18 with any MAU</div>
     </div>
   </div>
 
@@ -226,14 +231,16 @@
   <div class="section-label">Combined MAU Trend</div>
   <div class="trend-box">
     <h3>Total MAU across all apps</h3>
-    <canvas id="overallChart" height="70"></canvas>
+    <div class="overall-chart-wrap">
+      <canvas id="overallChart"></canvas>
+    </div>
   </div>
 
   <!-- App cards by subscription — rendered by JS -->
   <div id="subscriptions"></div>
 
   <footer>
-    Pendo Automation &nbsp;·&nbsp; Data as of Apr 13, 2026 &nbsp;·&nbsp; Jan–Mar = full months; Apr = MTD through Apr 12
+    Pendo Automation &nbsp;·&nbsp; Data as of Apr 13, 2026 &nbsp;·&nbsp; Jan–Mar = full months; Apr = MTD through Apr 13
   </footer>
 </main>
 
@@ -244,7 +251,8 @@ const COLORS = {
   "MealPlanR":                 "#36b37e",
   "HomeTown":                  "#ff8b00",
   "TB Guide":                  "#6554c0",
-  "AppHatchery":               "#00b8d9",
+  "PulseOX":                   "#00b8d9",
+  "Fabla":                     "#FF5630",
   "LEP":                       "#de350b",
   "AppHatchery-Tonsillectomy": "#e35a00",
   "TypeU":                     "#8777d9",
@@ -264,17 +272,18 @@ const APPS = [
   // TB Guide
   { sub: "TB Guide",         name: "Android",         plat: "android", mau: [82,  82,  148, 20]  },
   { sub: "TB Guide",         name: "iOS",             plat: "ios",     mau: [64,  70,  80,  41]  },
-  // AppHatchery
-  { sub: "AppHatchery",      name: "PulseOX iOS",     plat: "ios",     mau: [39,  37,  35,  15]  },
-  { sub: "AppHatchery",      name: "PulseOX Android", plat: "android", mau: [7,   1,   3,   2]   },
-  { sub: "AppHatchery",      name: "Fabla Android",   plat: "android", mau: [54,  73,  123, 81]  },
-  { sub: "AppHatchery",      name: "Fabla iOS",       plat: "ios",     mau: [131, 144, 202, 158] },
+  // PulseOX (AppHatchery)
+  { sub: "PulseOX",          name: "iOS",             plat: "ios",     mau: [39,  37,  35,  15]  },
+  { sub: "PulseOX",          name: "Android",         plat: "android", mau: [7,   1,   3,   2]   },
+  // Fabla (AppHatchery)
+  { sub: "Fabla",            name: "Android",         plat: "android", mau: [54,  73,  123, 81]  },
+  { sub: "Fabla",            name: "iOS",             plat: "ios",     mau: [131, 144, 202, 158] },
   // LEP
-  { sub: "LEP",              name: "iOS",             plat: "ios",     mau: [131, 144, 202, 158] },
-  { sub: "LEP",              name: "Android",         plat: "android", mau: [179, 195, 234, 83]  },
+  { sub: "LEP",              name: "iOS",             plat: "ios",     mau: [179, 195, 234, 89]  },
+  { sub: "LEP",              name: "Android",         plat: "android", mau: [0,   0,   0,   0]   },
   // AppHatchery-Tonsillectomy
-  { sub: "AppHatchery-Tonsillectomy", name: "iOS",    plat: "ios",     mau: [0,   0,   0,   0]   },
-  { sub: "AppHatchery-Tonsillectomy", name: "Android",plat: "android", mau: [125, 109, 146, 50]  },
+  { sub: "AppHatchery-Tonsillectomy", name: "iOS",    plat: "ios",     mau: [125, 109, 146, 50]  },
+  { sub: "AppHatchery-Tonsillectomy", name: "Android",plat: "android", mau: [19,  20,  26,  4]   },
   // TypeU
   { sub: "TypeU",            name: "iOS",             plat: "ios",     mau: [243, 271, 286, 145] },
   { sub: "TypeU",            name: "Android",         plat: "android", mau: [63,  56,  74,  42]  },
@@ -298,6 +307,7 @@ new Chart(document.getElementById("overallChart"), {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y.toLocaleString()} MAU` } }
@@ -311,7 +321,7 @@ new Chart(document.getElementById("overallChart"), {
 
 // ── Build subscription sections ──────────────────────────────
 const SUB_ORDER = ["Trial Connection", "MealPlanR", "HomeTown", "TB Guide",
-                   "AppHatchery", "LEP", "AppHatchery-Tonsillectomy", "TypeU"];
+                   "PulseOX", "Fabla", "LEP", "AppHatchery-Tonsillectomy", "TypeU"];
 
 const container = document.getElementById("subscriptions");
 
@@ -319,18 +329,6 @@ SUB_ORDER.forEach(subName => {
   const apps = APPS.filter(a => a.sub === subName);
   const color = COLORS[subName] || "#6b778c";
 
-  // Section wrapper
-  const section = document.createElement("div");
-  section.className = "sub-section";
-
-  // Section header
-  const header = document.createElement("div");
-  header.className = "sub-header";
-  header.innerHTML = `
-    <div class="sub-dot" style="background:${color}"></div>
-    <span class="sub-title">${subName}</span>
-    <span class="sub-count">${apps.length} app${apps.length !== 1 ? "s" : ""}</span>
-  `;
   // section label
   const lbl = document.createElement("div");
   lbl.className = "section-label";
@@ -344,7 +342,6 @@ SUB_ORDER.forEach(subName => {
     const inactive = app.mau.every(v => v === 0);
     const mar = app.mau[2];
     const feb = app.mau[1];
-    const jan = app.mau[0];
     const change = feb > 0 ? Math.round(((mar - feb) / feb) * 100) : null;
 
     let trendClass = "flat", trendText = "—";

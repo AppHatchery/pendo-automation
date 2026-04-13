@@ -81,14 +81,21 @@ CATALOG = [
         ],
     },
     {
-        "sub": "AppHatchery",
+        "sub": "PulseOX",
         "key_env": "PENDO_KEY_APPHATCHERY",
         "color": "#00b8d9",
         "apps": [
-            {"name": "PulseOX iOS",     "appId": "5744659150209024", "plat": "ios"},
-            {"name": "PulseOX Android", "appId": "6210778495516672", "plat": "android"},
-            {"name": "Fabla Android", "appId": "6261117648699392", "plat": "android"},
-            {"name": "Fabla iOS",     "appId": "6332690795659264", "plat": "ios"},
+            {"name": "iOS",     "appId": "5744659150209024", "plat": "ios"},
+            {"name": "Android", "appId": "6210778495516672", "plat": "android"},
+        ],
+    },
+    {
+        "sub": "Fabla",
+        "key_env": "PENDO_KEY_APPHATCHERY",
+        "color": "#FF5630",
+        "apps": [
+            {"name": "Android", "appId": "6261117648699392", "plat": "android"},
+            {"name": "iOS",     "appId": "6332690795659264", "plat": "ios"},
         ],
     },
     {
@@ -336,6 +343,7 @@ def build_html(app_data: list, windows: list) -> str:
     .trend-box {{ background: #fff; border: 1px solid #dfe1e6; border-radius: 10px;
                   padding: 20px 24px; margin-bottom: 4px; }}
     .trend-box h3 {{ font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; }}
+    .overall-chart-wrap {{ position: relative; width: 100%; height: 200px; }}
     .sub-section {{ margin-bottom: 28px; }}
     .cards-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }}
     .app-card {{ background: #fff; border: 1px solid #dfe1e6; border-radius: 10px;
@@ -384,7 +392,9 @@ def build_html(app_data: list, windows: list) -> str:
   <div class="section-label">Combined MAU Trend</div>
   <div class="trend-box">
     <h3>Total MAU across all apps</h3>
-    <canvas id="overallChart" height="70"></canvas>
+    <div class="overall-chart-wrap">
+      <canvas id="overallChart"></canvas>
+    </div>
   </div>
 
   <div id="subscriptions"></div>
@@ -417,6 +427,7 @@ new Chart(document.getElementById("overallChart"), {{
   }},
   options: {{
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {{ legend: {{ display: false }},
       tooltip: {{ callbacks: {{ label: ctx => ` ${{ctx.parsed.y.toLocaleString()}} MAU` }} }} }},
     scales: {{
