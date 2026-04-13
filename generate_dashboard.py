@@ -2,22 +2,29 @@
 """
 Pendo MAU Dashboard Generator
 ==============================
-Queries each Pendo subscription's REST API for the last 3 complete calendar
-months + current month-to-date, then writes dashboard.html.
+Two modes:
 
-Usage
------
-  python generate_dashboard.py
+  1. Data-file mode (no API key needed — used by the Claude scheduled task):
+       python generate_dashboard.py --data data.json
 
-Required environment variables (one per subscription, set as GitHub Secrets):
-  PENDO_KEY_TRIAL_CONNECTION
-  PENDO_KEY_MEALPLANR
-  PENDO_KEY_HOMETOWN
-  PENDO_KEY_TB_GUIDE
-  PENDO_KEY_APPHATCHERY
-  PENDO_KEY_LEP
-  PENDO_KEY_APPHATCHERY_TONSILLECTOMY
-  PENDO_KEY_TYPEU
+     data.json format:
+       {
+         "generated": "2026-04-13",
+         "windows": [["Jan", false], ["Feb", false], ["Mar", false], ["Apr*", true]],
+         "apps": [
+           {"sub": "Trial Connection", "color": "#0052cc",
+            "name": "iOS", "plat": "ios", "mau": [3, 10, 15, 13]},
+           ...
+         ]
+       }
+
+  2. REST API mode (requires Pendo Integration API keys as env vars):
+       python generate_dashboard.py
+
+     Required environment variables:
+       PENDO_KEY_TRIAL_CONNECTION, PENDO_KEY_MEALPLANR, PENDO_KEY_HOMETOWN,
+       PENDO_KEY_TB_GUIDE, PENDO_KEY_APPHATCHERY, PENDO_KEY_LEP,
+       PENDO_KEY_APPHATCHERY_TONSILLECTOMY, PENDO_KEY_TYPEU
 
 Each key is found in Pendo under Settings → Integrations → API Keys.
 """
@@ -78,12 +85,9 @@ CATALOG = [
         "key_env": "PENDO_KEY_APPHATCHERY",
         "color": "#00b8d9",
         "apps": [
-            {"name": "TypeU iOS",       "appId": "4654915591929856", "plat": "ios"},
-            {"name": "TypeU Android",   "appId": "5431199056068608", "plat": "android"},
             {"name": "PulseOX iOS",     "appId": "5744659150209024", "plat": "ios"},
             {"name": "PulseOX Android", "appId": "6210778495516672", "plat": "android"},
             {"name": "Audio Diaries",   "appId": "6261117648699392", "plat": "none"},
-            {"name": "Mamalove",        "appId": "6299265983905792", "plat": "none"},
             {"name": "Audio Diaries 2", "appId": "6332690795659264", "plat": "none"},
         ],
     },
@@ -518,13 +522,34 @@ function hexRgba(hex, a) {{
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 def main():
-    print("Computing month windows…", file=sys.stderr)
-    windows = get_month_windows(n_complete=3)
-    for label, start, end, is_mtd in windows:
-        print(f"  {label}: {start} → {end}{' (MTD)' if is_mtd else ''}", file=sys.stderr)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", metavar="FILE",
+                        help="Path to pre-fetched data.json (skips Pendo REST API calls)")
+    args = parser.parse_args()
 
-    print("\nQuerying Pendo…", file=sys.stderr)
-    app_data = collect(windows)
+    if args.data:
+        # ── Data-file mode (Claude scheduled task) ────────────────────────────
+        print(f"Loading data from {args.data}…", file=sys.stderr)
+        with open(args.data, encoding="utf-8") as fh:
+            payload = json.load(fh)
+
+        app_data = payload["apps"]
+        # Reconstruct windows as (label, start_date, end_date, is_mtd)
+        # We only need label + is_mtd for build_html; use dummy dates for the rest
+        windows = []
+        for label, is_mtd in payload["windows"]:
+            windows.append((label, date.today(), date.today(), is_mtd))
+
+    else:
+        # ── REST API mode ─────────────────────────────────────────────────────
+        print("Computing month windows…", file=sys.stderr)
+        windows = get_month_windows(n_complete=3)
+        for label, start, end, is_mtd in windows:
+            print(f"  {label}: {start} → {end}{' (MTD)' if is_mtd else ''}", file=sys.stderr)
+
+        print("\nQuerying Pendo…", file=sys.stderr)
+        app_data = collect(windows)
 
     print("\nGenerating dashboard.html…", file=sys.stderr)
     html = build_html(app_data, windows)
