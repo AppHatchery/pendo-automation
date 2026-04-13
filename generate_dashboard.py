@@ -551,10 +551,10 @@ def main():
         print("\nQuerying Pendo…", file=sys.stderr)
         app_data = collect(windows)
 
-    print("\nGenerating dashboard.html…", file=sys.stderr)
+    print("\nGenerating index.html…", file=sys.stderr)
     html = build_html(app_data, windows)
 
-    out_path = os.path.join(os.path.dirname(__file__), "dashboard.html")
+    out_path = os.path.join(os.path.dirname(__file__), "index.html")
     with open(out_path, "w", encoding="utf-8") as fh:
         fh.write(html)
     print(f"Wrote {out_path}", file=sys.stderr)
