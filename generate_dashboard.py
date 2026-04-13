@@ -58,8 +58,8 @@ CATALOG = [
         "key_env": "PENDO_KEY_MEALPLANR",
         "color": "#36b37e",
         "apps": [
-            {"name": "MealPlanR (A)", "appId": "6073576902033408", "plat": "none"},
-            {"name": "MealPlanR (B)", "appId": "6337677410631680", "plat": "none"},
+            {"name": "iOS",     "appId": "6073576902033408", "plat": "ios"},
+            {"name": "Android", "appId": "6337677410631680", "plat": "android"},
         ],
     },
     {
@@ -87,8 +87,8 @@ CATALOG = [
         "apps": [
             {"name": "PulseOX iOS",     "appId": "5744659150209024", "plat": "ios"},
             {"name": "PulseOX Android", "appId": "6210778495516672", "plat": "android"},
-            {"name": "Audio Diaries",   "appId": "6261117648699392", "plat": "none"},
-            {"name": "Audio Diaries 2", "appId": "6332690795659264", "plat": "none"},
+            {"name": "Fabla Android", "appId": "6261117648699392", "plat": "android"},
+            {"name": "Fabla iOS",     "appId": "6332690795659264", "plat": "ios"},
         ],
     },
     {
@@ -114,8 +114,8 @@ CATALOG = [
         "key_env": "PENDO_KEY_TYPEU",
         "color": "#8777d9",
         "apps": [
-            {"name": "TypeU (A)", "appId": "6227084461277184", "plat": "none"},
-            {"name": "TypeU (B)", "appId": "6266562190049280", "plat": "none"},
+            {"name": "iOS",     "appId": "6227084461277184", "plat": "ios"},
+            {"name": "Android", "appId": "6266562190049280", "plat": "android"},
         ],
     },
 ]
