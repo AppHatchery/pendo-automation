@@ -362,7 +362,7 @@ def build_html(app_data: list, windows: list) -> str:
     .up   {{ background: #e3fcef; color: #006644; }}
     .down {{ background: #ffebe6; color: #bf2600; }}
     .flat {{ background: #f4f5f7; color: #6b778c; }}
-    .chart-wrap {{ height: 56px; position: relative; }}
+    .chart-wrap {{ height: 100px; position: relative; }}
     .month-labels {{ display: flex; justify-content: space-between; margin-top: 4px; }}
     .month-labels span {{ font-size: 0.6rem; color: #97a0af; }}
     .inactive-card {{ opacity: 0.45; }}
@@ -507,10 +507,13 @@ SUB_ORDER.forEach(subName => {{
         }},
         options: {{
           responsive: true, maintainAspectRatio: false,
-          plugins: {{ legend: {{ display: false }}, tooltip: {{ enabled: !inactive }} }},
+          plugins: {{ legend: {{ display: false }}, tooltip: {{ enabled: !inactive, mode: 'nearest', intersect: false }} }},
           scales: {{
             x: {{ display: false }},
-            y: {{ display: false, beginAtZero: true, suggestedMax: maxVal * 1.2 }}
+            y: {{ display: true, beginAtZero: true, suggestedMax: maxVal * 1.2,
+                  ticks: {{ font: {{ size: 9 }}, color: '#97a0af', maxTicksLimit: 4,
+                             callback: v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v }},
+                  grid: {{ color: '#f0f2f5' }}, border: {{ display: false }} }}
           }},
           animation: {{ duration: 300 }}
         }}
