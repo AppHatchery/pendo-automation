@@ -7,182 +7,57 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f0f2f5;
-      color: #172b4d;
-    }
-
-    /* ── Header ── */
-    header {
-      background: #fff;
-      border-bottom: 1px solid #dfe1e6;
-      padding: 18px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f0f2f5; color: #172b4d; }
+    header { background: #fff; border-bottom: 1px solid #dfe1e6; padding: 18px 32px;
+              display: flex; align-items: center; justify-content: space-between; }
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand svg { flex-shrink: 0; }
     header h1 { font-size: 1.15rem; font-weight: 700; }
     header .meta { font-size: 0.75rem; color: #6b778c; margin-top: 2px; }
-    .apr-note {
-      font-size: 0.72rem;
-      background: #fffae6;
-      color: #974f0c;
-      border: 1px solid #ffe380;
-      border-radius: 4px;
-      padding: 5px 10px;
-    }
-
-    /* ── Layout ── */
+    .apr-note { font-size: 0.72rem; background: #fffae6; color: #974f0c;
+                 border: 1px solid #ffe380; border-radius: 4px; padding: 5px 10px; }
     main { max-width: 1280px; margin: 0 auto; padding: 24px 24px 52px; }
-
-    .section-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.9px;
-      text-transform: uppercase;
-      color: #6b778c;
-      margin: 24px 0 10px;
-    }
-
-    /* ── Summary row ── */
-    .summary-row {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-bottom: 4px;
-    }
-    .sum-card {
-      background: #fff;
-      border: 1px solid #dfe1e6;
-      border-radius: 10px;
-      padding: 16px 18px;
-    }
-    .sum-card .lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6b778c; }
+    .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.9px;
+                      text-transform: uppercase; color: #6b778c; margin: 24px 0 10px; }
+    .summary-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                    gap: 12px; margin-bottom: 4px; }
+    .sum-card { background: #fff; border: 1px solid #dfe1e6; border-radius: 10px; padding: 16px 18px; }
+    .sum-card .lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+                      letter-spacing: 0.5px; color: #6b778c; }
     .sum-card .val { font-size: 1.8rem; font-weight: 800; color: #172b4d; margin-top: 4px; line-height: 1; }
     .sum-card .sub { font-size: 0.72rem; color: #6b778c; margin-top: 4px; }
-
-    /* ── Overall trend ── */
-    .trend-box {
-      background: #fff;
-      border: 1px solid #dfe1e6;
-      border-radius: 10px;
-      padding: 20px 24px;
-      margin-bottom: 4px;
-    }
+    .trend-box { background: #fff; border: 1px solid #dfe1e6; border-radius: 10px;
+                  padding: 20px 24px; margin-bottom: 4px; }
     .trend-box h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; }
-    .overall-chart-wrap {
-      position: relative;
-      width: 100%;
-      height: 200px;
-    }
-    .overall-chart-wrap canvas { display: block; }
-
-    /* ── Subscription sections ── */
+    .overall-chart-wrap { position: relative; width: 100%; height: 200px; }
     .sub-section { margin-bottom: 28px; }
-    .sub-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .sub-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .sub-title { font-size: 0.9rem; font-weight: 700; }
-    .sub-count { font-size: 0.72rem; color: #6b778c; }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    /* ── App card ── */
-    .app-card {
-      background: #fff;
-      border: 1px solid #dfe1e6;
-      border-radius: 10px;
-      padding: 14px 16px 12px;
-      border-top: 3px solid #dfe1e6;
-    }
-    .app-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
+    .cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .app-card { background: #fff; border: 1px solid #dfe1e6; border-radius: 10px;
+                 padding: 14px 16px 12px; border-top: 3px solid #dfe1e6; }
+    .app-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
     .app-name { font-size: 0.82rem; font-weight: 700; color: #172b4d; }
-    .plat-badge {
-      font-size: 0.62rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 10px;
-      letter-spacing: 0.2px;
-      white-space: nowrap;
-    }
+    .plat-badge { font-size: 0.62rem; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+                   letter-spacing: 0.2px; white-space: nowrap; }
     .p-ios     { background: #e6f0ff; color: #0052cc; }
     .p-android { background: #e3fcef; color: #006644; }
     .p-none    { background: #f4f5f7; color: #6b778c; }
-
-    .mau-stat {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
+    .mau-stat { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
     .mau-num { font-size: 1.6rem; font-weight: 800; line-height: 1; }
     .mau-label { font-size: 0.7rem; color: #6b778c; }
-    .trend-pill {
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 10px;
-      margin-left: auto;
-      align-self: center;
-    }
+    .trend-pill { font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-left: auto; align-self: center; }
     .up   { background: #e3fcef; color: #006644; }
     .down { background: #ffebe6; color: #bf2600; }
     .flat { background: #f4f5f7; color: #6b778c; }
-
     .chart-wrap { height: 56px; position: relative; }
-
-    .month-labels {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 4px;
-    }
+    .month-labels { display: flex; justify-content: space-between; margin-top: 4px; }
     .month-labels span { font-size: 0.6rem; color: #97a0af; }
-
-    .inactive-card {
-      opacity: 0.45;
-    }
-    .inactive-badge {
-      font-size: 0.62rem;
-      color: #97a0af;
-      font-style: italic;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 0.7rem;
-      color: #97a0af;
-      margin-top: 32px;
-    }
-
-    @media (max-width: 600px) {
-      .summary-row { grid-template-columns: repeat(2, 1fr); }
-      .cards-grid  { grid-template-columns: 1fr; }
-    }
+    .inactive-card { opacity: 0.45; }
+    .inactive-badge { font-size: 0.62rem; color: #97a0af; font-style: italic; }
+    footer { text-align: center; font-size: 0.7rem; color: #97a0af; margin-top: 32px; }
+    @media (max-width: 600px) { .summary-row { grid-template-columns: repeat(2,1fr); } .cards-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-
 <header>
   <div class="brand">
     <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
@@ -191,45 +66,40 @@
     </svg>
     <div>
       <h1>Monthly Active Users — All Subscriptions</h1>
-      <div class="meta">Jan – Mar 2026 trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; 18 apps</div>
+      <div class="meta">3-month MAU trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; 18 apps &nbsp;·&nbsp; Updated May 04, 2026</div>
     </div>
   </div>
-  <div class="apr-note">Apr data is MTD (through Apr 13)</div>
+  <div class="apr-note">May data is MTD (through May 04)</div>
 </header>
-
 <main>
-
-  <!-- Summary row -->
   <div class="section-label">Overview</div>
   <div class="summary-row">
-    <div class="sum-card">
-      <div class="lbl">Jan MAU</div>
-      <div class="val">1,021</div>
-      <div class="sub">All apps combined</div>
-    </div>
-    <div class="sum-card">
-      <div class="lbl">Feb MAU</div>
-      <div class="val">1,090</div>
-      <div class="sub">+6.8% vs Jan</div>
-    </div>
-    <div class="sum-card">
-      <div class="lbl">Mar MAU</div>
-      <div class="val">1,421</div>
-      <div class="sub">+30.4% vs Feb</div>
-    </div>
-    <div class="sum-card">
-      <div class="lbl">Apr MAU (MTD)</div>
-      <div class="val">686</div>
-      <div class="sub">13 of 30 days</div>
-    </div>
-    <div class="sum-card">
-      <div class="lbl">Active Apps</div>
-      <div class="val">16</div>
-      <div class="sub">of 18 with any MAU</div>
-    </div>
-  </div>
+        <div class="sum-card">
+          <div class="lbl">Feb MAU</div>
+          <div class="val">1,089</div>
+          <div class="sub">All apps combined</div>
+        </div>
+        <div class="sum-card">
+          <div class="lbl">Mar MAU</div>
+          <div class="val">1,413</div>
+          <div class="sub">+29.8% vs Feb</div>
+        </div>
+        <div class="sum-card">
+          <div class="lbl">Apr MAU</div>
+          <div class="val">1,301</div>
+          <div class="sub">-7.9% vs Mar</div>
+        </div>
+        <div class="sum-card">
+          <div class="lbl">May* MAU</div>
+          <div class="val">329</div>
+          <div class="sub">through May 04</div>
+        </div>
+        <div class="sum-card">
+          <div class="lbl">Active Apps</div>
+          <div class="val">18</div>
+          <div class="sub">of 18 with any MAU</div>
+        </div></div>
 
-  <!-- Overall trend chart -->
   <div class="section-label">Combined MAU Trend</div>
   <div class="trend-box">
     <h3>Total MAU across all apps</h3>
@@ -238,82 +108,39 @@
     </div>
   </div>
 
-  <!-- App cards by subscription — rendered by JS -->
   <div id="subscriptions"></div>
 
   <footer>
-    Pendo Automation &nbsp;·&nbsp; Data as of Apr 13, 2026 &nbsp;·&nbsp; Jan–Mar = full months; Apr = MTD through Apr 13
+    Pendo Automation &nbsp;·&nbsp; Generated May 04, 2026
+    &nbsp;·&nbsp; Complete months shown in full; May* = month-to-date
   </footer>
 </main>
-
 <script>
-const MONTHS  = ["Jan", "Feb", "Mar", "Apr*"];
-const COLORS = {
-  "Trial Connection":          "#0052cc",
-  "MealPlanR":                 "#36b37e",
-  "HomeTown":                  "#ff8b00",
-  "TB Guide":                  "#6554c0",
-  "PulseOX":                   "#00b8d9",
-  "Fabla":                     "#FF5630",
-  "LEP":                       "#de350b",
-  "AppHatchery-Tonsillectomy": "#e35a00",
-  "TypeU":                     "#8777d9",
-};
+const MONTHS  = ["Feb", "Mar", "Apr", "May*"];
+const APPS    = [{"sub": "Trial Connection", "color": "#0052cc", "name": "iOS", "plat": "ios", "mau": [10, 15, 42, 4]}, {"sub": "Trial Connection", "color": "#0052cc", "name": "Android", "plat": "android", "mau": [6, 10, 9, 0]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "iOS", "plat": "ios", "mau": [1, 16, 16, 1]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "Android", "plat": "android", "mau": [13, 23, 12, 0]}, {"sub": "HomeTown", "color": "#ff8b00", "name": "Hometown", "plat": "none", "mau": [0, 0, 2, 0]}, {"sub": "HomeTown", "color": "#ff8b00", "name": "HomeTown", "plat": "none", "mau": [2, 0, 1, 1]}, {"sub": "TB Guide", "color": "#6554c0", "name": "Android", "plat": "android", "mau": [81, 140, 22, 1]}, {"sub": "TB Guide", "color": "#6554c0", "name": "iOS", "plat": "ios", "mau": [70, 80, 94, 8]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "iOS", "plat": "ios", "mau": [37, 35, 43, 4]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "Android", "plat": "android", "mau": [1, 3, 2, 0]}, {"sub": "Fabla", "color": "#FF5630", "name": "Android", "plat": "android", "mau": [73, 123, 143, 64]}, {"sub": "Fabla", "color": "#FF5630", "name": "iOS", "plat": "ios", "mau": [144, 202, 275, 115]}, {"sub": "LEP", "color": "#de350b", "name": "iOS", "plat": "ios", "mau": [195, 234, 172, 22]}, {"sub": "LEP", "color": "#de350b", "name": "Android", "plat": "android", "mau": [0, 0, 19, 4]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "iOS", "plat": "ios", "mau": [109, 146, 116, 22]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "Android", "plat": "android", "mau": [20, 26, 16, 1]}, {"sub": "TypeU", "color": "#8777d9", "name": "iOS", "plat": "ios", "mau": [271, 286, 248, 67]}, {"sub": "TypeU", "color": "#8777d9", "name": "Android", "plat": "android", "mau": [56, 74, 69, 15]}];
+const TOTALS  = [1089, 1413, 1301, 329];
+const COLORS  = {"Trial Connection": "#0052cc", "MealPlanR": "#36b37e", "HomeTown": "#ff8b00", "TB Guide": "#6554c0", "PulseOX": "#00b8d9", "Fabla": "#FF5630", "LEP": "#de350b", "AppHatchery-Tonsillectomy": "#e35a00", "TypeU": "#8777d9"};
+const SUB_ORDER = ["Trial Connection", "MealPlanR", "HomeTown", "TB Guide", "PulseOX", "Fabla", "LEP", "AppHatchery-Tonsillectomy", "TypeU"];
 
-// All apps — [Jan, Feb, Mar, Apr MTD]
-const APPS = [
-  // Trial Connection
-  { sub: "Trial Connection", name: "iOS",             plat: "ios",     mau: [3,   10,  15,  13]  },
-  { sub: "Trial Connection", name: "Android",         plat: "android", mau: [2,   6,   10,  4]   },
-  // MealPlanR
-  { sub: "MealPlanR",        name: "iOS",             plat: "ios",     mau: [1,   1,   16,  12]  },
-  { sub: "MealPlanR",        name: "Android",         plat: "android", mau: [8,   13,  23,  10]  },
-  // HomeTown
-  { sub: "HomeTown",         name: "Hometown",        plat: "none",    mau: [0,   0,   0,   0]   },
-  { sub: "HomeTown",         name: "HomeTown",        plat: "none",    mau: [1,   2,   0,   0]   },
-  // TB Guide
-  { sub: "TB Guide",         name: "Android",         plat: "android", mau: [82,  82,  148, 20]  },
-  { sub: "TB Guide",         name: "iOS",             plat: "ios",     mau: [64,  70,  80,  41]  },
-  // PulseOX (AppHatchery)
-  { sub: "PulseOX",          name: "iOS",             plat: "ios",     mau: [39,  37,  35,  15]  },
-  { sub: "PulseOX",          name: "Android",         plat: "android", mau: [7,   1,   3,   2]   },
-  // Fabla (AppHatchery)
-  { sub: "Fabla",            name: "Android",         plat: "android", mau: [54,  73,  123, 81]  },
-  { sub: "Fabla",            name: "iOS",             plat: "ios",     mau: [131, 144, 202, 158] },
-  // LEP
-  { sub: "LEP",              name: "iOS",             plat: "ios",     mau: [179, 195, 234, 89]  },
-  { sub: "LEP",              name: "Android",         plat: "android", mau: [0,   0,   0,   0]   },
-  // AppHatchery-Tonsillectomy
-  { sub: "AppHatchery-Tonsillectomy", name: "iOS",    plat: "ios",     mau: [125, 109, 146, 50]  },
-  { sub: "AppHatchery-Tonsillectomy", name: "Android",plat: "android", mau: [19,  20,  26,  4]   },
-  // TypeU
-  { sub: "TypeU",            name: "iOS",             plat: "ios",     mau: [243, 271, 286, 145] },
-  { sub: "TypeU",            name: "Android",         plat: "android", mau: [63,  56,  74,  42]  },
-];
-
-// ── Overall trend chart ──────────────────────────────────────
-const totals = MONTHS.map((_, mi) => APPS.reduce((s, a) => s + a.mau[mi], 0));
-
+// Overall bar chart
+const barColors = MONTHS.map((_, i) => i === MONTHS.length - 1
+  ? "rgba(255,143,0,0.18)" : "rgba(0,82,204,0.15)");
+const borderColors = MONTHS.map((_, i) => i === MONTHS.length - 1 ? "#ff8b00" : "#0052cc");
 new Chart(document.getElementById("overallChart"), {
   type: "bar",
   data: {
     labels: MONTHS,
     datasets: [{
-      label: "Total MAU",
-      data: totals,
-      backgroundColor: ["rgba(0,82,204,0.15)", "rgba(0,82,204,0.15)", "rgba(0,82,204,0.15)", "rgba(255,143,0,0.18)"],
-      borderColor:     ["#0052cc", "#0052cc", "#0052cc", "#ff8b00"],
-      borderWidth: 2,
-      borderRadius: 5,
+      label: "Total MAU", data: TOTALS,
+      backgroundColor: barColors, borderColor: borderColors,
+      borderWidth: 2, borderRadius: 5,
     }]
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y.toLocaleString()} MAU` } }
-    },
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y.toLocaleString()} MAU` } } },
     scales: {
       y: { beginAtZero: true, ticks: { font: { size: 11 } }, grid: { color: "#f4f5f7" } },
       x: { ticks: { font: { size: 12 } }, grid: { display: false } }
@@ -321,17 +148,13 @@ new Chart(document.getElementById("overallChart"), {
   }
 });
 
-// ── Build subscription sections ──────────────────────────────
-const SUB_ORDER = ["Trial Connection", "MealPlanR", "HomeTown", "TB Guide",
-                   "PulseOX", "Fabla", "LEP", "AppHatchery-Tonsillectomy", "TypeU"];
-
+// Per-subscription app cards
 const container = document.getElementById("subscriptions");
-
 SUB_ORDER.forEach(subName => {
   const apps = APPS.filter(a => a.sub === subName);
+  if (!apps.length) return;
   const color = COLORS[subName] || "#6b778c";
 
-  // section label
   const lbl = document.createElement("div");
   lbl.className = "section-label";
   lbl.textContent = subName;
@@ -342,48 +165,39 @@ SUB_ORDER.forEach(subName => {
 
   apps.forEach((app, idx) => {
     const inactive = app.mau.every(v => v === 0);
-    const mar = app.mau[2];
-    const feb = app.mau[1];
-    const change = feb > 0 ? Math.round(((mar - feb) / feb) * 100) : null;
-
+    const latest   = app.mau[app.mau.length - 2]; // last complete month
+    const prev     = app.mau[app.mau.length - 3];
+    const change   = prev > 0 ? Math.round((latest - prev) / prev * 100) : null;
     let trendClass = "flat", trendText = "—";
     if (change !== null) {
       if (change > 0)      { trendClass = "up";   trendText = `+${change}%`; }
       else if (change < 0) { trendClass = "down";  trendText = `${change}%`; }
       else                  { trendClass = "flat";  trendText = "0%"; }
     }
-
     const platLabel = app.plat === "ios" ? "iOS" : app.plat === "android" ? "Android" : "";
     const platClass = app.plat === "ios" ? "p-ios" : app.plat === "android" ? "p-android" : "p-none";
 
     const card = document.createElement("div");
     card.className = "app-card" + (inactive ? " inactive-card" : "");
     card.style.borderTopColor = color;
-
     card.innerHTML = `
       <div class="app-card-top">
         <div class="app-name">${app.name}</div>
         ${platLabel ? `<span class="plat-badge ${platClass}">${platLabel}</span>` : ""}
       </div>
       <div class="mau-stat">
-        <span class="mau-num">${inactive ? "—" : mar.toLocaleString()}</span>
-        <span class="mau-label">${inactive ? "" : "Mar MAU"}</span>
+        <span class="mau-num">${inactive ? "—" : latest.toLocaleString()}</span>
+        <span class="mau-label">${inactive ? "" : MONTHS[MONTHS.length-2] + " MAU"}</span>
         ${inactive
           ? `<span class="inactive-badge">no activity</span>`
           : `<span class="trend-pill ${trendClass}">${trendText}</span>`
         }
       </div>
-      <div class="chart-wrap">
-        <canvas id="chart-${subName.replace(/\s+/g,'-')}-${idx}"></canvas>
-      </div>
-      <div class="month-labels">
-        ${MONTHS.map(m => `<span>${m}</span>`).join("")}
-      </div>
+      <div class="chart-wrap"><canvas id="c-${subName.replace(/\s+/g,'-')}-${idx}"></canvas></div>
+      <div class="month-labels">${MONTHS.map(m => `<span>${m}</span>`).join("")}</div>
     `;
-
     grid.appendChild(card);
 
-    // Draw mini chart after append
     requestAnimationFrame(() => {
       const ctx = card.querySelector("canvas").getContext("2d");
       const maxVal = Math.max(...app.mau, 1);
@@ -395,22 +209,21 @@ SUB_ORDER.forEach(subName => {
             data: app.mau,
             borderColor: inactive ? "#dfe1e6" : color,
             borderWidth: 2,
-            pointRadius: [2, 2, 3, 2],
+            pointRadius: app.mau.map((_, i) => i === app.mau.length - 2 ? 3 : 2),
             pointBackgroundColor: inactive ? "#dfe1e6" : color,
             fill: true,
-            backgroundColor: inactive ? "rgba(220,220,220,0.08)" : hexToRgba(color, 0.08),
+            backgroundColor: inactive ? "rgba(220,220,220,0.08)" : hexRgba(color, 0.08),
             tension: 0.3,
           }]
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
+          responsive: true, maintainAspectRatio: false,
           plugins: { legend: { display: false }, tooltip: { enabled: !inactive } },
           scales: {
             x: { display: false },
             y: { display: false, beginAtZero: true, suggestedMax: maxVal * 1.2 }
           },
-          animation: { duration: 400 }
+          animation: { duration: 300 }
         }
       });
     });
@@ -419,11 +232,9 @@ SUB_ORDER.forEach(subName => {
   container.appendChild(grid);
 });
 
-function hexToRgba(hex, alpha) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
+function hexRgba(hex, a) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
 }
 </script>
 </body>

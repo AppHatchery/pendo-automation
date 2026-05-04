@@ -345,7 +345,7 @@ def build_html(app_data: list, windows: list) -> str:
     .trend-box h3 {{ font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; }}
     .overall-chart-wrap {{ position: relative; width: 100%; height: 200px; }}
     .sub-section {{ margin-bottom: 28px; }}
-    .cards-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }}
+    .cards-grid {{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }}
     .app-card {{ background: #fff; border: 1px solid #dfe1e6; border-radius: 10px;
                  padding: 14px 16px 12px; border-top: 3px solid #dfe1e6; }}
     .app-card-top {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }}
@@ -368,7 +368,7 @@ def build_html(app_data: list, windows: list) -> str:
     .inactive-card {{ opacity: 0.45; }}
     .inactive-badge {{ font-size: 0.62rem; color: #97a0af; font-style: italic; }}
     footer {{ text-align: center; font-size: 0.7rem; color: #97a0af; margin-top: 32px; }}
-    @media (max-width: 600px) {{ .summary-row {{ grid-template-columns: repeat(2,1fr); }} }}
+    @media (max-width: 600px) {{ .summary-row {{ grid-template-columns: repeat(2,1fr); }} .cards-grid {{ grid-template-columns: 1fr; }} }}
   </style>
 </head>
 <body>

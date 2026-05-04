@@ -1,0 +1,24 @@
+{
+  "generated": "2026-05-04",
+  "windows": [["Feb", false], ["Mar", false], ["Apr", false], ["May*", true]],
+  "apps": [
+    {"sub": "Trial Connection", "color": "#0052cc", "name": "iOS",     "plat": "ios",     "mau": [10,  15,  42,  4]},
+    {"sub": "Trial Connection", "color": "#0052cc", "name": "Android", "plat": "android", "mau": [6,   10,  9,   0]},
+    {"sub": "MealPlanR",        "color": "#36b37e", "name": "iOS",     "plat": "ios",     "mau": [1,   16,  16,  1]},
+    {"sub": "MealPlanR",        "color": "#36b37e", "name": "Android", "plat": "android", "mau": [13,  23,  12,  0]},
+    {"sub": "HomeTown",         "color": "#ff8b00", "name": "Hometown","plat": "none",    "mau": [0,   0,   2,   0]},
+    {"sub": "HomeTown",         "color": "#ff8b00", "name": "HomeTown","plat": "none",    "mau": [2,   0,   1,   1]},
+    {"sub": "TB Guide",         "color": "#6554c0", "name": "Android", "plat": "android", "mau": [81,  140, 22,  1]},
+    {"sub": "TB Guide",         "color": "#6554c0", "name": "iOS",     "plat": "ios",     "mau": [70,  80,  94,  8]},
+    {"sub": "PulseOX",          "color": "#00b8d9", "name": "iOS",     "plat": "ios",     "mau": [37,  35,  43,  4]},
+    {"sub": "PulseOX",          "color": "#00b8d9", "name": "Android", "plat": "android", "mau": [1,   3,   2,   0]},
+    {"sub": "Fabla",            "color": "#FF5630", "name": "Android", "plat": "android", "mau": [73,  123, 143, 64]},
+    {"sub": "Fabla",            "color": "#FF5630", "name": "iOS",     "plat": "ios",     "mau": [144, 202, 275, 115]},
+    {"sub": "LEP",              "color": "#de350b", "name": "iOS",     "plat": "ios",     "mau": [195, 234, 172, 22]},
+    {"sub": "LEP",              "color": "#de350b", "name": "Android", "plat": "android", "mau": [0,   0,   19,  4]},
+    {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "iOS",     "plat": "ios",     "mau": [109, 146, 116, 22]},
+    {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "Android", "plat": "android", "mau": [20,  26,  16,  1]},
+    {"sub": "TypeU",            "color": "#8777d9", "name": "iOS",     "plat": "ios",     "mau": [271, 286, 248, 67]},
+    {"sub": "TypeU",            "color": "#8777d9", "name": "Android", "plat": "android", "mau": [56,  74,  69,  15]}
+  ]
+}
