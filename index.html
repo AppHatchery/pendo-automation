@@ -66,10 +66,10 @@
     </svg>
     <div>
       <h1>Monthly Active Users — All Subscriptions</h1>
-      <div class="meta">3-month MAU trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; 18 apps &nbsp;·&nbsp; Updated Jun 28, 2026</div>
+      <div class="meta">3-month MAU trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; 18 apps &nbsp;·&nbsp; Updated Jun 29, 2026</div>
     </div>
   </div>
-  <div class="apr-note">Jun data is MTD (through Jun 28)</div>
+  <div class="apr-note">Jun data is MTD (through Jun 29)</div>
 </header>
 <main>
   <div class="section-label">Overview</div>
@@ -92,7 +92,7 @@
         <div class="sum-card">
           <div class="lbl">Jun* MAU</div>
           <div class="val">1,000</div>
-          <div class="sub">through Jun 28</div>
+          <div class="sub">through Jun 29</div>
         </div>
         <div class="sum-card">
           <div class="lbl">Active Apps</div>
@@ -111,7 +111,7 @@
   <div id="subscriptions"></div>
 
   <footer>
-    Pendo Automation &nbsp;·&nbsp; Generated Jun 28, 2026
+    Pendo Automation &nbsp;·&nbsp; Generated Jun 29, 2026
     &nbsp;·&nbsp; Complete months shown in full; Jun* = month-to-date
   </footer>
 </main>
@@ -165,8 +165,8 @@ SUB_ORDER.forEach(subName => {
 
   apps.forEach((app, idx) => {
     const inactive = app.mau.every(v => v === 0);
-    const latest   = app.mau[app.mau.length - 2]; // last complete month
-    const prev     = app.mau[app.mau.length - 3];
+    const latest   = app.mau[app.mau.length - 1]; // most recent window (MTD if current month)
+    const prev     = app.mau[app.mau.length - 2];
     const change   = prev > 0 ? Math.round((latest - prev) / prev * 100) : null;
     let trendClass = "flat", trendText = "—";
     if (change !== null) {
@@ -187,7 +187,7 @@ SUB_ORDER.forEach(subName => {
       </div>
       <div class="mau-stat">
         <span class="mau-num">${inactive ? "—" : latest.toLocaleString()}</span>
-        <span class="mau-label">${inactive ? "" : MONTHS[MONTHS.length-2] + " MAU"}</span>
+        <span class="mau-label">${inactive ? "" : MONTHS[MONTHS.length-1] + " MAU"}</span>
         ${inactive
           ? `<span class="inactive-badge">no activity</span>`
           : `<span class="trend-pill ${trendClass}">${trendText}</span>`
@@ -209,7 +209,7 @@ SUB_ORDER.forEach(subName => {
             data: app.mau,
             borderColor: inactive ? "#dfe1e6" : color,
             borderWidth: 2,
-            pointRadius: app.mau.map((_, i) => i === app.mau.length - 2 ? 3 : 2),
+            pointRadius: app.mau.map((_, i) => i === app.mau.length - 1 ? 3 : 2),
             pointBackgroundColor: inactive ? "#dfe1e6" : color,
             fill: true,
             backgroundColor: inactive ? "rgba(220,220,220,0.08)" : hexRgba(color, 0.08),

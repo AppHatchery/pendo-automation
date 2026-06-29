@@ -454,8 +454,8 @@ SUB_ORDER.forEach(subName => {{
 
   apps.forEach((app, idx) => {{
     const inactive = app.mau.every(v => v === 0);
-    const latest   = app.mau[app.mau.length - 2]; // last complete month
-    const prev     = app.mau[app.mau.length - 3];
+    const latest   = app.mau[app.mau.length - 1]; // most recent window (MTD if current month)
+    const prev     = app.mau[app.mau.length - 2];
     const change   = prev > 0 ? Math.round((latest - prev) / prev * 100) : null;
     let trendClass = "flat", trendText = "—";
     if (change !== null) {{
@@ -476,7 +476,7 @@ SUB_ORDER.forEach(subName => {{
       </div>
       <div class="mau-stat">
         <span class="mau-num">${{inactive ? "—" : latest.toLocaleString()}}</span>
-        <span class="mau-label">${{inactive ? "" : MONTHS[MONTHS.length-2] + " MAU"}}</span>
+        <span class="mau-label">${{inactive ? "" : MONTHS[MONTHS.length-1] + " MAU"}}</span>
         ${{inactive
           ? `<span class="inactive-badge">no activity</span>`
           : `<span class="trend-pill ${{trendClass}}">${{trendText}}</span>`
@@ -498,7 +498,7 @@ SUB_ORDER.forEach(subName => {{
             data: app.mau,
             borderColor: inactive ? "#dfe1e6" : color,
             borderWidth: 2,
-            pointRadius: app.mau.map((_, i) => i === app.mau.length - 2 ? 3 : 2),
+            pointRadius: app.mau.map((_, i) => i === app.mau.length - 1 ? 3 : 2),
             pointBackgroundColor: inactive ? "#dfe1e6" : color,
             fill: true,
             backgroundColor: inactive ? "rgba(220,220,220,0.08)" : hexRgba(color, 0.08),
