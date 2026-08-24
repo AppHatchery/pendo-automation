@@ -66,23 +66,18 @@
     </svg>
     <div>
       <h1>Monthly Active Users — All Subscriptions</h1>
-      <div class="meta">3-month MAU trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; 18 apps &nbsp;·&nbsp; Updated Jul 20, 2026</div>
+      <div class="meta">3-month MAU trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; 18 apps &nbsp;·&nbsp; Updated Aug 24, 2026</div>
     </div>
   </div>
-  <div class="apr-note">Jul data is MTD (through Jul 20)</div>
+  <div class="apr-note">Aug data is MTD (through Aug 24)</div>
 </header>
 <main>
   <div class="section-label">Overview</div>
   <div class="summary-row">
         <div class="sum-card">
-          <div class="lbl">Apr MAU</div>
-          <div class="val">1,083</div>
-          <div class="sub">All apps combined</div>
-        </div>
-        <div class="sum-card">
           <div class="lbl">May MAU</div>
           <div class="val">1,064</div>
-          <div class="sub">-1.8% vs Apr</div>
+          <div class="sub">All apps combined</div>
         </div>
         <div class="sum-card">
           <div class="lbl">Jun MAU</div>
@@ -90,9 +85,14 @@
           <div class="sub">-0.8% vs May</div>
         </div>
         <div class="sum-card">
-          <div class="lbl">Jul* MAU</div>
-          <div class="val">687</div>
-          <div class="sub">through Jul 20</div>
+          <div class="lbl">Jul MAU</div>
+          <div class="val">1,097</div>
+          <div class="sub">+3.9% vs Jun</div>
+        </div>
+        <div class="sum-card">
+          <div class="lbl">Aug* MAU</div>
+          <div class="val">1,059</div>
+          <div class="sub">through Aug 24</div>
         </div>
         <div class="sum-card">
           <div class="lbl">Active Apps</div>
@@ -111,14 +111,14 @@
   <div id="subscriptions"></div>
 
   <footer>
-    Pendo Automation &nbsp;·&nbsp; Generated Jul 20, 2026
-    &nbsp;·&nbsp; Complete months shown in full; Jul* = month-to-date
+    Pendo Automation &nbsp;·&nbsp; Generated Aug 24, 2026
+    &nbsp;·&nbsp; Complete months shown in full; Aug* = month-to-date
   </footer>
 </main>
 <script>
-const MONTHS  = ["Apr", "May", "Jun", "Jul*"];
-const APPS    = [{"sub": "Trial Connection", "color": "#0052cc", "name": "iOS", "plat": "ios", "mau": [42, 14, 9, 7]}, {"sub": "Trial Connection", "color": "#0052cc", "name": "Android", "plat": "android", "mau": [9, 1, 1, 1]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "iOS", "plat": "ios", "mau": [16, 8, 5, 1]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "Android", "plat": "android", "mau": [12, 11, 2, 1]}, {"sub": "HomeTown", "color": "#ff8b00", "name": "Hometown", "plat": "none", "mau": [2, 1, 0, 1]}, {"sub": "HomeTown", "color": "#ff8b00", "name": "HomeTown", "plat": "none", "mau": [1, 2, 0, 0]}, {"sub": "TB Guide", "color": "#6554c0", "name": "Android", "plat": "android", "mau": [22, 25, 13, 18]}, {"sub": "TB Guide", "color": "#6554c0", "name": "iOS", "plat": "ios", "mau": [94, 60, 68, 40]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "iOS", "plat": "ios", "mau": [43, 43, 21, 14]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "Android", "plat": "android", "mau": [2, 2, 2, 1]}, {"sub": "Fabla", "color": "#FF5630", "name": "Android", "plat": "android", "mau": [51, 70, 53, 23]}, {"sub": "Fabla", "color": "#FF5630", "name": "iOS", "plat": "ios", "mau": [148, 174, 190, 125]}, {"sub": "LEP", "color": "#de350b", "name": "iOS", "plat": "ios", "mau": [172, 197, 252, 132]}, {"sub": "LEP", "color": "#de350b", "name": "Android", "plat": "android", "mau": [19, 10, 0, 0]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "iOS", "plat": "ios", "mau": [116, 99, 122, 83]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "Android", "plat": "android", "mau": [16, 21, 26, 8]}, {"sub": "TypeU", "color": "#8777d9", "name": "iOS", "plat": "ios", "mau": [249, 269, 246, 189]}, {"sub": "TypeU", "color": "#8777d9", "name": "Android", "plat": "android", "mau": [69, 57, 46, 43]}];
-const TOTALS  = [1083, 1064, 1056, 687];
+const MONTHS  = ["May", "Jun", "Jul", "Aug*"];
+const APPS    = [{"sub": "Trial Connection", "color": "#0052cc", "name": "iOS", "plat": "ios", "mau": [14, 9, 18, 16]}, {"sub": "Trial Connection", "color": "#0052cc", "name": "Android", "plat": "android", "mau": [1, 1, 7, 11]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "iOS", "plat": "ios", "mau": [8, 5, 1, 2]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "Android", "plat": "android", "mau": [11, 2, 1, 2]}, {"sub": "HomeTown", "color": "#ff8b00", "name": "Hometown", "plat": "none", "mau": [1, 0, 2, 49]}, {"sub": "HomeTown", "color": "#ff8b00", "name": "HomeTown", "plat": "none", "mau": [2, 0, 0, 56]}, {"sub": "TB Guide", "color": "#6554c0", "name": "Android", "plat": "android", "mau": [25, 13, 20, 8]}, {"sub": "TB Guide", "color": "#6554c0", "name": "iOS", "plat": "ios", "mau": [60, 68, 61, 39]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "iOS", "plat": "ios", "mau": [43, 21, 23, 27]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "Android", "plat": "android", "mau": [2, 2, 1, 1]}, {"sub": "Fabla", "color": "#FF5630", "name": "Android", "plat": "android", "mau": [70, 53, 41, 29]}, {"sub": "Fabla", "color": "#FF5630", "name": "iOS", "plat": "ios", "mau": [174, 190, 203, 169]}, {"sub": "LEP", "color": "#de350b", "name": "iOS", "plat": "ios", "mau": [197, 252, 247, 230]}, {"sub": "LEP", "color": "#de350b", "name": "Android", "plat": "android", "mau": [10, 0, 0, 0]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "iOS", "plat": "ios", "mau": [99, 122, 132, 114]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "Android", "plat": "android", "mau": [21, 26, 16, 38]}, {"sub": "TypeU", "color": "#8777d9", "name": "iOS", "plat": "ios", "mau": [269, 246, 266, 220]}, {"sub": "TypeU", "color": "#8777d9", "name": "Android", "plat": "android", "mau": [57, 46, 58, 48]}];
+const TOTALS  = [1064, 1056, 1097, 1059];
 const COLORS  = {"Trial Connection": "#0052cc", "MealPlanR": "#36b37e", "HomeTown": "#ff8b00", "TB Guide": "#6554c0", "PulseOX": "#00b8d9", "Fabla": "#FF5630", "LEP": "#de350b", "AppHatchery-Tonsillectomy": "#e35a00", "TypeU": "#8777d9"};
 const SUB_ORDER = ["Trial Connection", "MealPlanR", "HomeTown", "TB Guide", "PulseOX", "Fabla", "LEP", "AppHatchery-Tonsillectomy", "TypeU"];
 
