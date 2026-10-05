@@ -54,11 +54,11 @@ Or re-run the Claude scheduled task manually:
 |---|---|---|
 | Trial Connection | iOS, Android | 4906408059535360 |
 | MealPlanR | iOS, Android | 5306235578679296 |
-| HomeTown | Hometown, HomeTown | 5407896868093952 |
+| ACT-GEN (formerly HomeTown) | Android, iOS | 5407896868093952 |
 | TB Guide | Android, iOS | 4781793898004480 |
 | PulseOX *(AppHatchery)* | iOS, Android | 6552462672592896 |
 | Fabla *(AppHatchery)* | Android, iOS | 6552462672592896 |
-| LEP | iOS, Android | 4734766210416640 |
+| Vocalis CHOA / Vocalis Emory (formerly LEP; split by account April-16-Trial-v1 / Emory-pilot) | iOS, Android | 4734766210416640 |
 | AppHatchery-Tonsillectomy | iOS, Android | 5673257672966144 |
 | TypeU | iOS, Android | 4744881717968896 |
 
@@ -140,7 +140,7 @@ The GitHub Actions workflow (`.github/workflows/weekly-dashboard.yml`) has this 
 
 ## Known Issues & Notes
 
-- **LEP Android app** (appId `6008038726107136`) shows zero MAU across all months — the app appears inactive in Pendo.
+- **Vocalis (LEP) Android app** (appId `6008038726107136`) shows zero MAU across all months — the app appears inactive in Pendo.
 - **Tonsillectomy iOS** paused activity after January 2026, likely reflecting a study cycle gap. Android remains active.
-- **HomeTown** apps have near-zero MAU; the subscription appears dormant.
+- **ACT-GEN (HomeTown)** apps have near-zero MAU; the subscription appears dormant.
 - **Data ordering bug (resolved):** When querying all 80+ app×window combinations in a single parallel batch, Pendo MCP results returned out of order, causing app data to be assigned to the wrong app slots. Fixed by querying each app individually. The Claude scheduled task queries windows sequentially (all apps in parallel per window) to avoid this.

@@ -68,10 +68,10 @@
       ]
     },
     {
-      "sub": "HomeTown",
+      "sub": "ACT-GEN",
       "color": "#ff8b00",
-      "name": "Hometown",
-      "plat": "none",
+      "name": "Android",
+      "plat": "android",
       "mau": [
         2,
         75,
@@ -80,10 +80,10 @@
       ]
     },
     {
-      "sub": "HomeTown",
+      "sub": "ACT-GEN",
       "color": "#ff8b00",
-      "name": "HomeTown",
-      "plat": "none",
+      "name": "iOS",
+      "plat": "ios",
       "mau": [
         0,
         75,
@@ -164,20 +164,44 @@
       ]
     },
     {
-      "sub": "LEP",
+      "sub": "Vocalis CHOA",
       "color": "#de350b",
       "name": "iOS",
       "plat": "ios",
       "mau": [
-        247,
-        326,
-        249,
-        27
+        116,
+        170,
+        133,
+        13
       ]
     },
     {
-      "sub": "LEP",
+      "sub": "Vocalis CHOA",
       "color": "#de350b",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "sub": "Vocalis Emory",
+      "color": "#ae2a19",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        70,
+        90,
+        57,
+        8
+      ]
+    },
+    {
+      "sub": "Vocalis Emory",
+      "color": "#ae2a19",
       "name": "Android",
       "plat": "android",
       "mau": [

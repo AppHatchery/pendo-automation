@@ -63,12 +63,12 @@ CATALOG = [
         ],
     },
     {
-        "sub": "HomeTown",
+        "sub": "ACT-GEN",
         "key_env": "PENDO_KEY_HOMETOWN",
         "color": "#ff8b00",
         "apps": [
-            {"name": "Hometown", "appId": "4823276791398400", "plat": "none"},
-            {"name": "HomeTown", "appId": "5848057001148416", "plat": "none"},
+            {"name": "Android", "appId": "4823276791398400", "plat": "android"},
+            {"name": "iOS",     "appId": "5848057001148416", "plat": "ios"},
         ],
     },
     {
@@ -98,13 +98,24 @@ CATALOG = [
             {"name": "iOS",     "appId": "6332690795659264", "plat": "ios"},
         ],
     },
+    # Vocalis (formerly LEP) is one Pendo subscription split by account:
+    # CHOA = account "April-16-Trial-v1", Emory = account "Emory-pilot".
     {
-        "sub": "LEP",
+        "sub": "Vocalis CHOA",
         "key_env": "PENDO_KEY_LEP",
         "color": "#de350b",
         "apps": [
-            {"name": "iOS",     "appId": "5661434429112320", "plat": "ios"},
-            {"name": "Android", "appId": "6008038726107136", "plat": "android"},
+            {"name": "iOS",     "appId": "5661434429112320", "plat": "ios",     "accountId": "April-16-Trial-v1"},
+            {"name": "Android", "appId": "6008038726107136", "plat": "android", "accountId": "April-16-Trial-v1"},
+        ],
+    },
+    {
+        "sub": "Vocalis Emory",
+        "key_env": "PENDO_KEY_LEP",
+        "color": "#ae2a19",
+        "apps": [
+            {"name": "iOS",     "appId": "5661434429112320", "plat": "ios",     "accountId": "Emory-pilot"},
+            {"name": "Android", "appId": "6008038726107136", "plat": "android", "accountId": "Emory-pilot"},
         ],
     },
     {
@@ -228,6 +239,12 @@ def collect(windows):
             )
 
         for app in sub_def["apps"]:
+            if api_key and app.get("accountId"):
+                print(
+                    f"[WARN] REST mode can't split by account — "
+                    f"{sub_name}/{app['name']} shows whole-app MAU.",
+                    file=sys.stderr,
+                )
             mau_list = []
             for label, start, end, is_mtd in windows:
                 if api_key:
@@ -380,7 +397,7 @@ def build_html(app_data: list, windows: list) -> str:
     </svg>
     <div>
       <h1>Monthly Active Users — All Subscriptions</h1>
-      <div class="meta">3-month MAU trend &nbsp;·&nbsp; 8 subscriptions &nbsp;·&nbsp; {len(app_data)} apps &nbsp;·&nbsp; Updated {today_str}</div>
+      <div class="meta">3-month MAU trend &nbsp;·&nbsp; {len(sub_order)} subscriptions &nbsp;·&nbsp; {len(app_data)} apps &nbsp;·&nbsp; Updated {today_str}</div>
     </div>
   </div>
   {mtd_note}
