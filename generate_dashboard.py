@@ -362,7 +362,7 @@ def build_html(app_data: list, windows: list) -> str:
     .trend-box h3 {{ font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; }}
     .overall-chart-wrap {{ position: relative; width: 100%; height: 200px; }}
     .sub-section {{ margin-bottom: 28px; }}
-    .cards-grid {{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }}
+    .cards-grid {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }}
     .app-card {{ background: #fff; border: 1px solid #dfe1e6; border-radius: 10px;
                  padding: 14px 16px 12px; border-top: 3px solid #dfe1e6; }}
     .app-card-top {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }}
@@ -380,12 +380,17 @@ def build_html(app_data: list, windows: list) -> str:
     .down {{ background: #ffebe6; color: #bf2600; }}
     .flat {{ background: #f4f5f7; color: #6b778c; }}
     .chart-wrap {{ height: 100px; position: relative; }}
-    .month-labels {{ display: flex; justify-content: space-between; margin-top: 4px; }}
-    .month-labels span {{ font-size: 0.6rem; color: #97a0af; }}
+    .month-vals {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 4px; margin-top: 8px; }}
+    .mv {{ text-align: center; padding: 4px 2px; border-radius: 6px; background: #f7f8f9; }}
+    .mv-m {{ display: block; font-size: 0.6rem; color: #6b778c; text-transform: uppercase; letter-spacing: 0.3px; }}
+    .mv-n {{ display: block; font-size: 0.78rem; font-weight: 700; color: #42526e; }}
+    .mv-head {{ background: #e9f2ff; }}
+    .mv-head .mv-n {{ color: #0052cc; }}
+    .mv-mtd .mv-n {{ font-style: italic; font-weight: 600; color: #97a0af; }}
     .inactive-card {{ opacity: 0.45; }}
     .inactive-badge {{ font-size: 0.62rem; color: #97a0af; font-style: italic; }}
     footer {{ text-align: center; font-size: 0.7rem; color: #97a0af; margin-top: 32px; }}
-    @media (max-width: 600px) {{ .summary-row {{ grid-template-columns: repeat(2,1fr); }} .cards-grid {{ grid-template-columns: 1fr; }} }}
+    @media (max-width: 600px) {{ .summary-row {{ grid-template-columns: repeat(2,1fr); }} .cards-grid {{ grid-template-columns: minmax(0, 1fr); }} }}
   </style>
 </head>
 <body>
@@ -427,6 +432,7 @@ const APPS    = {apps_json};
 const TOTALS  = {totals_json};
 const COLORS  = {colors_json};
 const SUB_ORDER = {json.dumps([s["sub"] for s in CATALOG])};
+const LAST_IS_MTD = {json.dumps(is_mtd_last)};
 
 // Overall bar chart
 const barColors = MONTHS.map((_, i) => i === MONTHS.length - 1
@@ -471,8 +477,10 @@ SUB_ORDER.forEach(subName => {{
 
   apps.forEach((app, idx) => {{
     const inactive = app.mau.every(v => v === 0);
-    const latest   = app.mau[app.mau.length - 1]; // most recent window (MTD if current month)
-    const prev     = app.mau[app.mau.length - 2];
+    // Headline = most recent complete month; MTD is partial, so it's only shown in the strip below.
+    const headIdx  = LAST_IS_MTD ? app.mau.length - 2 : app.mau.length - 1;
+    const latest   = app.mau[headIdx];
+    const prev     = app.mau[headIdx - 1];
     const change   = prev > 0 ? Math.round((latest - prev) / prev * 100) : null;
     let trendClass = "flat", trendText = "—";
     if (change !== null) {{
@@ -493,14 +501,17 @@ SUB_ORDER.forEach(subName => {{
       </div>
       <div class="mau-stat">
         <span class="mau-num">${{inactive ? "—" : latest.toLocaleString()}}</span>
-        <span class="mau-label">${{inactive ? "" : MONTHS[MONTHS.length-1] + " MAU"}}</span>
+        <span class="mau-label">${{inactive ? "" : MONTHS[headIdx] + " MAU"}}</span>
         ${{inactive
           ? `<span class="inactive-badge">no activity</span>`
           : `<span class="trend-pill ${{trendClass}}">${{trendText}}</span>`
         }}
       </div>
       <div class="chart-wrap"><canvas id="c-${{subName.replace(/\\s+/g,'-')}}-${{idx}}"></canvas></div>
-      <div class="month-labels">${{MONTHS.map(m => `<span>${{m}}</span>`).join("")}}</div>
+      <div class="month-vals">${{MONTHS.map((m, i) => `
+        <div class="mv${{i === headIdx ? " mv-head" : ""}}${{LAST_IS_MTD && i === MONTHS.length - 1 ? " mv-mtd" : ""}}">
+          <span class="mv-m">${{m}}</span><span class="mv-n">${{app.mau[i].toLocaleString()}}</span>
+        </div>`).join("")}}</div>
     `;
     grid.appendChild(card);
 
@@ -515,7 +526,9 @@ SUB_ORDER.forEach(subName => {{
             data: app.mau,
             borderColor: inactive ? "#dfe1e6" : color,
             borderWidth: 2,
-            pointRadius: app.mau.map((_, i) => i === app.mau.length - 1 ? 3 : 2),
+            pointRadius: app.mau.map((_, i) => i === headIdx ? 4 : 2),
+            pointHoverRadius: 5,
+            pointHitRadius: 20,
             pointBackgroundColor: inactive ? "#dfe1e6" : color,
             fill: true,
             backgroundColor: inactive ? "rgba(220,220,220,0.08)" : hexRgba(color, 0.08),
@@ -524,7 +537,10 @@ SUB_ORDER.forEach(subName => {{
         }},
         options: {{
           responsive: true, maintainAspectRatio: false,
-          plugins: {{ legend: {{ display: false }}, tooltip: {{ enabled: !inactive, mode: 'nearest', intersect: false }} }},
+          plugins: {{ legend: {{ display: false }}, tooltip: {{ enabled: !inactive, mode: 'index', intersect: false, displayColors: false,
+            callbacks: {{ title: items => MONTHS[items[0].dataIndex] + (LAST_IS_MTD && items[0].dataIndex === MONTHS.length - 1 ? " (MTD)" : ""),
+                          label: ctx => ` ${{ctx.parsed.y.toLocaleString()}} MAU` }} }} }},
+          interaction: {{ mode: 'index', intersect: false }},
           scales: {{
             x: {{ display: false }},
             y: {{ display: true, beginAtZero: true, suggestedMax: maxVal * 1.2,
