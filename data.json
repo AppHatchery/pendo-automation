@@ -1,24 +1,239 @@
 {
-  "generated": "2026-09-14",
-  "windows": [["Jun", false], ["Jul", false], ["Aug", false], ["Sep*", true]],
+  "generated": "2026-10-05",
+  "windows": [
+    [
+      "Jul",
+      false
+    ],
+    [
+      "Aug",
+      false
+    ],
+    [
+      "Sep",
+      false
+    ],
+    [
+      "Oct*",
+      true
+    ]
+  ],
   "apps": [
-    {"sub": "Trial Connection", "color": "#0052cc", "name": "iOS",     "plat": "ios",     "mau": [9,   18,  16,  5]},
-    {"sub": "Trial Connection", "color": "#0052cc", "name": "Android", "plat": "android", "mau": [1,   7,   11,  0]},
-    {"sub": "MealPlanR",        "color": "#36b37e", "name": "iOS",     "plat": "ios",     "mau": [5,   1,   3,   2]},
-    {"sub": "MealPlanR",        "color": "#36b37e", "name": "Android", "plat": "android", "mau": [2,   1,   2,   2]},
-    {"sub": "HomeTown",         "color": "#ff8b00", "name": "Hometown","plat": "none",    "mau": [0,   2,   75,  5]},
-    {"sub": "HomeTown",         "color": "#ff8b00", "name": "HomeTown","plat": "none",    "mau": [0,   0,   75,  16]},
-    {"sub": "TB Guide",         "color": "#6554c0", "name": "Android", "plat": "android", "mau": [13,  20,  11,  4]},
-    {"sub": "TB Guide",         "color": "#6554c0", "name": "iOS",     "plat": "ios",     "mau": [68,  61,  47,  22]},
-    {"sub": "PulseOX",          "color": "#00b8d9", "name": "iOS",     "plat": "ios",     "mau": [21,  23,  37,  20]},
-    {"sub": "PulseOX",          "color": "#00b8d9", "name": "Android", "plat": "android", "mau": [2,   1,   1,   0]},
-    {"sub": "Fabla",            "color": "#FF5630", "name": "Android", "plat": "android", "mau": [53,  41,  36,  17]},
-    {"sub": "Fabla",            "color": "#FF5630", "name": "iOS",     "plat": "ios",     "mau": [190, 203, 201, 91]},
-    {"sub": "LEP",              "color": "#de350b", "name": "iOS",     "plat": "ios",     "mau": [252, 247, 326, 136]},
-    {"sub": "LEP",              "color": "#de350b", "name": "Android", "plat": "android", "mau": [0,   0,   0,   0]},
-    {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "iOS",     "plat": "ios",     "mau": [122, 132, 140, 57]},
-    {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "Android", "plat": "android", "mau": [26,  16,  46,  14]},
-    {"sub": "TypeU",            "color": "#8777d9", "name": "iOS",     "plat": "ios",     "mau": [246, 266, 268, 160]},
-    {"sub": "TypeU",            "color": "#8777d9", "name": "Android", "plat": "android", "mau": [46,  58,  61,  39]}
+    {
+      "sub": "Trial Connection",
+      "color": "#0052cc",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        18,
+        16,
+        15,
+        3
+      ]
+    },
+    {
+      "sub": "Trial Connection",
+      "color": "#0052cc",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        7,
+        11,
+        1,
+        0
+      ]
+    },
+    {
+      "sub": "MealPlanR",
+      "color": "#36b37e",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        1,
+        3,
+        4,
+        0
+      ]
+    },
+    {
+      "sub": "MealPlanR",
+      "color": "#36b37e",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        1,
+        2,
+        5,
+        0
+      ]
+    },
+    {
+      "sub": "HomeTown",
+      "color": "#ff8b00",
+      "name": "Hometown",
+      "plat": "none",
+      "mau": [
+        2,
+        75,
+        15,
+        5
+      ]
+    },
+    {
+      "sub": "HomeTown",
+      "color": "#ff8b00",
+      "name": "HomeTown",
+      "plat": "none",
+      "mau": [
+        0,
+        75,
+        57,
+        17
+      ]
+    },
+    {
+      "sub": "TB Guide",
+      "color": "#6554c0",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        20,
+        11,
+        8,
+        3
+      ]
+    },
+    {
+      "sub": "TB Guide",
+      "color": "#6554c0",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        61,
+        47,
+        56,
+        12
+      ]
+    },
+    {
+      "sub": "PulseOX",
+      "color": "#00b8d9",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        23,
+        37,
+        46,
+        10
+      ]
+    },
+    {
+      "sub": "PulseOX",
+      "color": "#00b8d9",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        1,
+        1,
+        4,
+        2
+      ]
+    },
+    {
+      "sub": "Fabla",
+      "color": "#FF5630",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        41,
+        36,
+        47,
+        25
+      ]
+    },
+    {
+      "sub": "Fabla",
+      "color": "#FF5630",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        203,
+        201,
+        207,
+        73
+      ]
+    },
+    {
+      "sub": "LEP",
+      "color": "#de350b",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        247,
+        326,
+        249,
+        27
+      ]
+    },
+    {
+      "sub": "LEP",
+      "color": "#de350b",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "sub": "AppHatchery-Tonsillectomy",
+      "color": "#e35a00",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        132,
+        140,
+        93,
+        22
+      ]
+    },
+    {
+      "sub": "AppHatchery-Tonsillectomy",
+      "color": "#e35a00",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        16,
+        46,
+        35,
+        6
+      ]
+    },
+    {
+      "sub": "TypeU",
+      "color": "#8777d9",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        266,
+        268,
+        248,
+        81
+      ]
+    },
+    {
+      "sub": "TypeU",
+      "color": "#8777d9",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        58,
+        61,
+        61,
+        16
+      ]
+    }
   ]
 }
