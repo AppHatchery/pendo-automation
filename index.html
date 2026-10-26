@@ -35,6 +35,14 @@
     .app-card { background: #fff; border: 1px solid #dfe1e6; border-radius: 10px;
                  padding: 14px 16px 12px; border-top: 3px solid #dfe1e6; }
     .app-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .section-label { display: flex; align-items: center; gap: 8px; }
+    .move-btns { display: inline-flex; gap: 2px; opacity: 0.35; transition: opacity .15s; }
+    .section-label:hover .move-btns, .move-btns:focus-within { opacity: 1; }
+    .move-btns button, .order-bar button { border: 1px solid #dfe1e6; background: #fff; color: #42526e; border-radius: 4px;
+                        font-size: 0.65rem; line-height: 1; padding: 3px 6px; cursor: pointer; }
+    .move-btns button:hover, .order-bar button:hover { background: #f4f5f7; }
+    .order-bar { text-align: right; margin: 0 0 6px; }
+    .order-bar button { font-size: 0.72rem; padding: 4px 10px; }
     .app-name { font-size: 0.82rem; font-weight: 700; color: #172b4d; }
     .plat-badge { font-size: 0.62rem; font-weight: 700; padding: 2px 7px; border-radius: 10px;
                    letter-spacing: 0.2px; white-space: nowrap; }
@@ -71,7 +79,7 @@
     </svg>
     <div>
       <h1>Monthly Active Users — All Subscriptions</h1>
-      <div class="meta">3-month MAU trend &nbsp;·&nbsp; 10 subscriptions &nbsp;·&nbsp; 20 apps &nbsp;·&nbsp; Updated Oct 25, 2026</div>
+      <div class="meta">3-month MAU trend &nbsp;·&nbsp; 11 subscriptions &nbsp;·&nbsp; 20 apps &nbsp;·&nbsp; Updated Oct 25, 2026</div>
     </div>
   </div>
   <div class="apr-note">Oct data is MTD (through Oct 25)</div>
@@ -96,7 +104,7 @@
         </div>
         <div class="sum-card">
           <div class="lbl">Oct* MAU</div>
-          <div class="val">1,004</div>
+          <div class="val">1,009</div>
           <div class="sub">through Oct 25</div>
         </div>
         <div class="sum-card">
@@ -113,6 +121,7 @@
     </div>
   </div>
 
+  <div class="order-bar"><button type="button" id="resetOrder">Reset project order</button></div>
   <div id="subscriptions"></div>
 
   <footer>
@@ -122,10 +131,10 @@
 </main>
 <script>
 const MONTHS  = ["Jul", "Aug", "Sep", "Oct*"];
-const APPS    = [{"sub": "Trial Connection", "color": "#0052cc", "name": "iOS", "plat": "ios", "mau": [18, 16, 15, 9]}, {"sub": "Trial Connection", "color": "#0052cc", "name": "Android", "plat": "android", "mau": [7, 11, 1, 0]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "iOS", "plat": "ios", "mau": [1, 3, 4, 3]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "Android", "plat": "android", "mau": [1, 2, 5, 1]}, {"sub": "ACT-GEN", "color": "#ff8b00", "name": "Android", "plat": "android", "mau": [2, 75, 15, 9]}, {"sub": "ACT-GEN", "color": "#ff8b00", "name": "iOS", "plat": "ios", "mau": [0, 75, 49, 55]}, {"sub": "TB Guide", "color": "#6554c0", "name": "Android", "plat": "android", "mau": [20, 11, 8, 10]}, {"sub": "TB Guide", "color": "#6554c0", "name": "iOS", "plat": "ios", "mau": [61, 47, 56, 41]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "iOS", "plat": "ios", "mau": [23, 37, 46, 37]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "Android", "plat": "android", "mau": [1, 1, 4, 7]}, {"sub": "Fabla", "color": "#FF5630", "name": "Android", "plat": "android", "mau": [60, 46, 60, 54]}, {"sub": "Fabla", "color": "#FF5630", "name": "iOS", "plat": "ios", "mau": [217, 215, 217, 217]}, {"sub": "Vocalis CHOA", "color": "#de350b", "name": "iOS", "plat": "ios", "mau": [116, 170, 133, 75]}, {"sub": "Vocalis CHOA", "color": "#de350b", "name": "Android", "plat": "android", "mau": [0, 0, 0, 0]}, {"sub": "Vocalis Emory", "color": "#ae2a19", "name": "iOS", "plat": "ios", "mau": [70, 90, 57, 31]}, {"sub": "Vocalis Emory", "color": "#ae2a19", "name": "Android", "plat": "android", "mau": [0, 0, 0, 0]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "iOS", "plat": "ios", "mau": [132, 140, 93, 83]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "Android", "plat": "android", "mau": [16, 46, 35, 33]}, {"sub": "TypeU", "color": "#8777d9", "name": "iOS", "plat": "ios", "mau": [266, 268, 248, 244]}, {"sub": "TypeU", "color": "#8777d9", "name": "Android", "plat": "android", "mau": [58, 61, 61, 95]}];
-const TOTALS  = [1069, 1314, 1107, 1004];
-const COLORS  = {"Trial Connection": "#0052cc", "MealPlanR": "#36b37e", "ACT-GEN": "#ff8b00", "TB Guide": "#6554c0", "PulseOX": "#00b8d9", "Fabla": "#FF5630", "Vocalis CHOA": "#de350b", "Vocalis Emory": "#ae2a19", "AppHatchery-Tonsillectomy": "#e35a00", "TypeU": "#8777d9"};
-const SUB_ORDER = ["Trial Connection", "MealPlanR", "ACT-GEN", "TB Guide", "PulseOX", "Fabla", "Vocalis CHOA", "Vocalis Emory", "AppHatchery-Tonsillectomy", "TypeU"];
+const APPS    = [{"sub": "Trial Connection", "color": "#0052cc", "name": "iOS", "plat": "ios", "mau": [18, 16, 15, 9]}, {"sub": "Trial Connection", "color": "#0052cc", "name": "Android", "plat": "android", "mau": [7, 11, 1, 0]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "iOS", "plat": "ios", "mau": [1, 3, 4, 3]}, {"sub": "MealPlanR", "color": "#36b37e", "name": "Android", "plat": "android", "mau": [1, 2, 5, 1]}, {"sub": "ACT-GEN", "color": "#ff8b00", "name": "Android", "plat": "android", "mau": [2, 75, 15, 9]}, {"sub": "ACT-GEN", "color": "#ff8b00", "name": "iOS", "plat": "ios", "mau": [0, 75, 49, 55]}, {"sub": "TB Guide", "color": "#6554c0", "name": "Android", "plat": "android", "mau": [20, 11, 8, 10]}, {"sub": "TB Guide", "color": "#6554c0", "name": "iOS", "plat": "ios", "mau": [61, 47, 56, 41]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "iOS", "plat": "ios", "mau": [23, 37, 46, 37]}, {"sub": "PulseOX", "color": "#00b8d9", "name": "Android", "plat": "android", "mau": [1, 1, 4, 7]}, {"sub": "Fabla", "color": "#FF5630", "name": "Android", "plat": "android", "mau": [60, 46, 60, 54]}, {"sub": "Fabla", "color": "#FF5630", "name": "iOS", "plat": "ios", "mau": [217, 215, 217, 219]}, {"sub": "Vocalis CHOA", "color": "#de350b", "name": "iOS", "plat": "ios", "mau": [116, 170, 133, 76]}, {"sub": "Vocalis CHOA", "color": "#de350b", "name": "Android", "plat": "android", "mau": [0, 0, 0, 0]}, {"sub": "Vocalis Emory", "color": "#ae2a19", "name": "iOS", "plat": "ios", "mau": [70, 90, 57, 31]}, {"sub": "Vocalis Emory", "color": "#ae2a19", "name": "Android", "plat": "android", "mau": [0, 0, 0, 0]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "iOS", "plat": "ios", "mau": [132, 140, 93, 83]}, {"sub": "AppHatchery-Tonsillectomy", "color": "#e35a00", "name": "Android", "plat": "android", "mau": [16, 46, 35, 33]}, {"sub": "TypeU", "color": "#8777d9", "name": "iOS", "plat": "ios", "mau": [266, 268, 248, 245]}, {"sub": "TypeU", "color": "#8777d9", "name": "Android", "plat": "android", "mau": [58, 61, 61, 96]}];
+const TOTALS  = [1069, 1314, 1107, 1009];
+const COLORS  = {"Trial Connection": "#0052cc", "MealPlanR": "#36b37e", "ACT-GEN": "#ff8b00", "TB Guide": "#6554c0", "PulseOX": "#00b8d9", "Fabla": "#FF5630", "Vocalis CHOA": "#de350b", "Vocalis Emory": "#ae2a19", "Tonsillectomy TCH": "#f2a65a", "Tonsillectomy": "#e35a00", "TypeU": "#8777d9"};
+const SUB_ORDER = ["Trial Connection", "MealPlanR", "ACT-GEN", "TB Guide", "PulseOX", "Fabla", "Vocalis CHOA", "Vocalis Emory", "Tonsillectomy TCH", "Tonsillectomy", "TypeU"];
 const LAST_IS_MTD = true;
 
 // Overall bar chart
@@ -161,10 +170,16 @@ SUB_ORDER.forEach(subName => {
   if (!apps.length) return;
   const color = COLORS[subName] || "#6b778c";
 
+  const block = document.createElement("div");
+  block.className = "sub-block";
+  block.dataset.sub = subName;
+
   const lbl = document.createElement("div");
   lbl.className = "section-label";
-  lbl.textContent = subName;
-  container.appendChild(lbl);
+  lbl.innerHTML = `<span class="sub-title"></span>
+    <span class="move-btns"><button type="button" data-dir="-1" title="Move up">&#9650;</button><button type="button" data-dir="1" title="Move down">&#9660;</button></span>`;
+  lbl.querySelector(".sub-title").textContent = subName;
+  block.appendChild(lbl);
 
   const grid = document.createElement("div");
   grid.className = "cards-grid";
@@ -248,7 +263,38 @@ SUB_ORDER.forEach(subName => {
     });
   });
 
-  container.appendChild(grid);
+  block.appendChild(grid);
+  container.appendChild(block);
+});
+
+// Re-order projects: ▲/▼ move a block; order is remembered in this browser only.
+const ORDER_KEY = "pendo-dashboard-order";
+function saveOrder() {
+  try { localStorage.setItem(ORDER_KEY, JSON.stringify([...container.children].map(b => b.dataset.sub))); } catch (e) {}
+}
+function applyOrder(order) {
+  order.forEach(name => {
+    const b = [...container.children].find(x => x.dataset.sub === name);
+    if (b) container.appendChild(b);
+  });
+}
+try {
+  const saved = JSON.parse(localStorage.getItem(ORDER_KEY) || "null");
+  if (Array.isArray(saved)) applyOrder(saved);
+} catch (e) {}
+container.addEventListener("click", ev => {
+  const btn = ev.target.closest(".move-btns button");
+  if (!btn) return;
+  const block = btn.closest(".sub-block");
+  const sib = btn.dataset.dir === "-1" ? block.previousElementSibling : block.nextElementSibling;
+  if (!sib) return;
+  if (btn.dataset.dir === "-1") container.insertBefore(block, sib); else container.insertBefore(sib, block);
+  saveOrder();
+  block.scrollIntoView({ block: "nearest", behavior: "smooth" });
+});
+document.getElementById("resetOrder").addEventListener("click", () => {
+  try { localStorage.removeItem(ORDER_KEY); } catch (e) {}
+  applyOrder(SUB_ORDER);
 });
 
 function hexRgba(hex, a) {
