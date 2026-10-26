@@ -118,13 +118,24 @@ CATALOG = [
             {"name": "Android", "appId": "6008038726107136", "plat": "android", "accountId": "Emory-pilot"},
         ],
     },
+    # Tonsillectomy is one Pendo subscription split by account prefix:
+    # TCH = accounts "TCH-Testing" + "TCH-Production", regular = "Tonsillectomy-Testing" + "Tonsillectomy-Production".
     {
-        "sub": "AppHatchery-Tonsillectomy",
+        "sub": "Tonsillectomy TCH",
+        "key_env": "PENDO_KEY_APPHATCHERY_TONSILLECTOMY",
+        "color": "#f2a65a",
+        "apps": [
+            {"name": "iOS",     "appId": "6170654446518272", "plat": "ios",     "accountId": ["TCH-Testing", "TCH-Production"]},
+            {"name": "Android", "appId": "6301989379047424", "plat": "android", "accountId": ["TCH-Testing", "TCH-Production"]},
+        ],
+    },
+    {
+        "sub": "Tonsillectomy",
         "key_env": "PENDO_KEY_APPHATCHERY_TONSILLECTOMY",
         "color": "#e35a00",
         "apps": [
-            {"name": "iOS",     "appId": "6170654446518272", "plat": "ios"},
-            {"name": "Android", "appId": "6301989379047424", "plat": "android"},
+            {"name": "iOS",     "appId": "6170654446518272", "plat": "ios",     "accountId": ["Tonsillectomy-Testing", "Tonsillectomy-Production"]},
+            {"name": "Android", "appId": "6301989379047424", "plat": "android", "accountId": ["Tonsillectomy-Testing", "Tonsillectomy-Production"]},
         ],
     },
     {
@@ -137,6 +148,20 @@ CATALOG = [
         ],
     },
 ]
+
+
+# Dashboard display order (top → bottom) and renames applied to data.json subs.
+# Projects not listed here are appended at the end in data order.
+DISPLAY_ORDER = [
+    "Fabla", "Vocalis CHOA", "Vocalis Emory", "TypeU", "TB Guide",
+    "Ready for Tonsillectomies", "PulseOX", "ACT-GEN", "Trial Connection", "MealPlanR",
+]
+SUB_ALIASES = {"AppHatchery-Tonsillectomy": "Ready for Tonsillectomies"}
+
+# Status colouring (per app graph). Needs >= MIN_MAU in each of the last
+# MIN_MONTHS complete months, otherwise the graph stays the default blue.
+MIN_MAU, MIN_MONTHS = 30, 3
+SURGE_PCT, DECREASE_PCT, MAJOR_DECREASE_PCT = 20, -10, -30   # last complete month vs. the one before
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -272,6 +297,7 @@ def collect(windows):
 # ── HTML generation ───────────────────────────────────────────────────────────
 
 def build_html(app_data: list, windows: list) -> str:
+    app_data = [{**a, "sub": SUB_ALIASES.get(a["sub"], a["sub"])} for a in app_data]
     today_str   = date.today().strftime("%b %d, %Y")
     month_labels = [w[0] for w in windows]
     is_mtd_last  = windows[-1][3]
@@ -288,12 +314,15 @@ def build_html(app_data: list, windows: list) -> str:
 
     active_apps = sum(1 for a in app_data if any(v > 0 for v in a["mau"]))
 
-    sub_order = [s["sub"] for s in CATALOG]
+    present   = list(dict.fromkeys(a["sub"] for a in app_data))
+    sub_order = [s for s in DISPLAY_ORDER if s in present] + [s for s in present if s not in DISPLAY_ORDER]
 
     apps_json   = json.dumps(app_data)
     months_json = json.dumps(month_labels)
     totals_json = json.dumps(totals)
-    colors_json = json.dumps({s["sub"]: s["color"] for s in CATALOG})
+    colors_json = json.dumps({a["sub"]: a["color"] for a in app_data})
+    status_cfg  = json.dumps({"minMau": MIN_MAU, "minMonths": MIN_MONTHS, "surge": SURGE_PCT,
+                              "decrease": DECREASE_PCT, "major": MAJOR_DECREASE_PCT})
 
     # Summary cards for each window
     cards_html = ""
@@ -366,6 +395,14 @@ def build_html(app_data: list, windows: list) -> str:
     .app-card {{ background: #fff; border: 1px solid #dfe1e6; border-radius: 10px;
                  padding: 14px 16px 12px; border-top: 3px solid #dfe1e6; }}
     .app-card-top {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }}
+    .section-label {{ display: flex; align-items: center; gap: 8px; }}
+    .move-btns {{ display: inline-flex; gap: 2px; opacity: 0.35; transition: opacity .15s; }}
+    .section-label:hover .move-btns, .move-btns:focus-within {{ opacity: 1; }}
+    .move-btns button, .order-bar button {{ border: 1px solid #dfe1e6; background: #fff; color: #42526e; border-radius: 4px;
+                        font-size: 0.65rem; line-height: 1; padding: 3px 6px; cursor: pointer; }}
+    .move-btns button:hover, .order-bar button:hover {{ background: #f4f5f7; }}
+    .order-bar {{ text-align: right; margin: 0 0 6px; }}
+    .order-bar button {{ font-size: 0.72rem; padding: 4px 10px; }}
     .app-name {{ font-size: 0.82rem; font-weight: 700; color: #172b4d; }}
     .plat-badge {{ font-size: 0.62rem; font-weight: 700; padding: 2px 7px; border-radius: 10px;
                    letter-spacing: 0.2px; white-space: nowrap; }}
@@ -386,6 +423,8 @@ def build_html(app_data: list, windows: list) -> str:
     .mv-n {{ display: block; font-size: 0.78rem; font-weight: 700; color: #42526e; }}
     .mv-head {{ background: #e9f2ff; }}
     .mv-head .mv-n {{ color: #0052cc; }}
+    .legend {{ display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.72rem; color: #42526e; margin: 0 0 8px; }}
+    .legend i {{ display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }}
     .mv-mtd .mv-n {{ font-style: italic; font-weight: 600; color: #97a0af; }}
     .inactive-card {{ opacity: 0.45; }}
     .inactive-badge {{ font-size: 0.62rem; color: #97a0af; font-style: italic; }}
@@ -419,6 +458,14 @@ def build_html(app_data: list, windows: list) -> str:
     </div>
   </div>
 
+  <div class="legend">
+    <span><i style="background:#0052cc"></i>On target (or &lt;{MIN_MAU} MAU)</span>
+    <span><i style="background:#36b37e"></i>Surge (&ge;+{SURGE_PCT}%)</span>
+    <span><i style="background:#ff8b00"></i>Decrease ({DECREASE_PCT}% to {MAJOR_DECREASE_PCT}%)</span>
+    <span><i style="background:#de350b"></i>Major decrease (&le;{MAJOR_DECREASE_PCT}%)</span>
+    <span>Last complete month vs. prior; needs &ge;{MIN_MAU} MAU for {MIN_MONTHS} straight months</span>
+  </div>
+  <div class="order-bar"><button type="button" id="resetOrder">Reset project order</button></div>
   <div id="subscriptions"></div>
 
   <footer>
@@ -431,7 +478,27 @@ const MONTHS  = {months_json};
 const APPS    = {apps_json};
 const TOTALS  = {totals_json};
 const COLORS  = {colors_json};
-const SUB_ORDER = {json.dumps([s["sub"] for s in CATALOG])};
+const SUB_ORDER = {json.dumps(sub_order)};
+const STATUS_CFG = {status_cfg};
+const STATUS = {{
+  target:   {{ color: "#0052cc", label: "On target" }},
+  surge:    {{ color: "#36b37e", label: "Surge" }},
+  decrease: {{ color: "#ff8b00", label: "Decrease" }},
+  major:    {{ color: "#de350b", label: "Major decrease" }},
+}};
+// Only graphs with >= minMau in each of the last minMonths complete months get a status;
+// everything else stays plain blue ("target").
+function statusOf(mau) {{
+  const complete = LAST_IS_MTD ? mau.slice(0, -1) : mau;
+  const recent = complete.slice(-STATUS_CFG.minMonths);
+  if (recent.length < STATUS_CFG.minMonths || recent.some(v => v < STATUS_CFG.minMau)) return "target";
+  const last = recent[recent.length - 1], prior = recent[recent.length - 2];
+  const pct = (last - prior) / prior * 100;
+  if (pct >= STATUS_CFG.surge) return "surge";
+  if (pct <= STATUS_CFG.major) return "major";
+  if (pct <= STATUS_CFG.decrease) return "decrease";
+  return "target";
+}}
 const LAST_IS_MTD = {json.dumps(is_mtd_last)};
 
 // Overall bar chart
@@ -465,12 +532,17 @@ const container = document.getElementById("subscriptions");
 SUB_ORDER.forEach(subName => {{
   const apps = APPS.filter(a => a.sub === subName);
   if (!apps.length) return;
-  const color = COLORS[subName] || "#6b778c";
+
+  const block = document.createElement("div");
+  block.className = "sub-block";
+  block.dataset.sub = subName;
 
   const lbl = document.createElement("div");
   lbl.className = "section-label";
-  lbl.textContent = subName;
-  container.appendChild(lbl);
+  lbl.innerHTML = `<span class="sub-title"></span>
+    <span class="move-btns"><button type="button" data-dir="-1" title="Move up">&#9650;</button><button type="button" data-dir="1" title="Move down">&#9660;</button></span>`;
+  lbl.querySelector(".sub-title").textContent = subName;
+  block.appendChild(lbl);
 
   const grid = document.createElement("div");
   grid.className = "cards-grid";
@@ -488,12 +560,15 @@ SUB_ORDER.forEach(subName => {{
       else if (change < 0) {{ trendClass = "down";  trendText = `${{change}}%`; }}
       else                  {{ trendClass = "flat";  trendText = "0%"; }}
     }}
+    const status = statusOf(app.mau);
+    const color  = STATUS[status].color;
     const platLabel = app.plat === "ios" ? "iOS" : app.plat === "android" ? "Android" : "";
     const platClass = app.plat === "ios" ? "p-ios" : app.plat === "android" ? "p-android" : "p-none";
 
     const card = document.createElement("div");
     card.className = "app-card" + (inactive ? " inactive-card" : "");
     card.style.borderTopColor = color;
+    card.title = STATUS[status].label;
     card.innerHTML = `
       <div class="app-card-top">
         <div class="app-name">${{app.name}}</div>
@@ -554,7 +629,38 @@ SUB_ORDER.forEach(subName => {{
     }});
   }});
 
-  container.appendChild(grid);
+  block.appendChild(grid);
+  container.appendChild(block);
+}});
+
+// Re-order projects: ▲/▼ move a block; order is remembered in this browser only.
+const ORDER_KEY = "pendo-dashboard-order-v2";
+function saveOrder() {{
+  try {{ localStorage.setItem(ORDER_KEY, JSON.stringify([...container.children].map(b => b.dataset.sub))); }} catch (e) {{}}
+}}
+function applyOrder(order) {{
+  order.forEach(name => {{
+    const b = [...container.children].find(x => x.dataset.sub === name);
+    if (b) container.appendChild(b);
+  }});
+}}
+try {{
+  const saved = JSON.parse(localStorage.getItem(ORDER_KEY) || "null");
+  if (Array.isArray(saved)) applyOrder(saved);
+}} catch (e) {{}}
+container.addEventListener("click", ev => {{
+  const btn = ev.target.closest(".move-btns button");
+  if (!btn) return;
+  const block = btn.closest(".sub-block");
+  const sib = btn.dataset.dir === "-1" ? block.previousElementSibling : block.nextElementSibling;
+  if (!sib) return;
+  if (btn.dataset.dir === "-1") container.insertBefore(block, sib); else container.insertBefore(sib, block);
+  saveOrder();
+  block.scrollIntoView({{ block: "nearest", behavior: "smooth" }});
+}});
+document.getElementById("resetOrder").addEventListener("click", () => {{
+  try {{ localStorage.removeItem(ORDER_KEY); }} catch (e) {{}}
+  applyOrder(SUB_ORDER);
 }});
 
 function hexRgba(hex, a) {{
