@@ -154,9 +154,9 @@ CATALOG = [
 # Projects not listed here are appended at the end in data order.
 DISPLAY_ORDER = [
     "Fabla", "Vocalis CHOA", "Vocalis Emory", "TypeU", "TB Guide",
-    "Ready for Tonsillectomies", "PulseOX", "ACT-GEN", "Trial Connection", "MealPlanR",
+    "Tonsillectomy TCH", "Tonsillectomy", "PulseOX", "ACT-GEN", "Trial Connection", "MealPlanR",
 ]
-SUB_ALIASES = {"AppHatchery-Tonsillectomy": "Ready for Tonsillectomies"}
+SUB_ALIASES = {}
 
 # Status colouring (per app graph). Needs >= MIN_MAU in each of the last
 # MIN_MONTHS complete months, otherwise the graph stays the default blue.

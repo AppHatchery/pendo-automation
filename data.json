@@ -212,27 +212,51 @@
       ]
     },
     {
-      "sub": "AppHatchery-Tonsillectomy",
+      "sub": "Tonsillectomy TCH",
+      "color": "#f2a65a",
+      "name": "iOS",
+      "plat": "ios",
+      "mau": [
+        118,
+        103,
+        82,
+        69
+      ]
+    },
+    {
+      "sub": "Tonsillectomy TCH",
+      "color": "#f2a65a",
+      "name": "Android",
+      "plat": "android",
+      "mau": [
+        14,
+        29,
+        28,
+        26
+      ]
+    },
+    {
+      "sub": "Tonsillectomy",
       "color": "#e35a00",
       "name": "iOS",
       "plat": "ios",
       "mau": [
-        132,
-        140,
-        93,
-        83
+        14,
+        37,
+        11,
+        14
       ]
     },
     {
-      "sub": "AppHatchery-Tonsillectomy",
+      "sub": "Tonsillectomy",
       "color": "#e35a00",
       "name": "Android",
       "plat": "android",
       "mau": [
-        16,
-        46,
-        35,
-        33
+        2,
+        17,
+        7,
+        7
       ]
     },
     {
